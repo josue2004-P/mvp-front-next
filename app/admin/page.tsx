@@ -1,24 +1,16 @@
-import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/route";
-import Link from "next/link";
+"use client";
+import { useAuth } from "@/src/presentation/auth/useAuth";
 
-export default async function AdminPage() {
-  const session = await getServerSession(authOptions);
+export default function AdminPage() {
+  const { user, protectRoute, checking } = useAuth();
+  protectRoute();
 
-  if (!session || session.user.role !== "admin") {
-    return (
-      <main className="p-6">
-        <h1 className="text-2xl font-bold text-red-500 mb-4">Acceso denegado ❌</h1>
-        <Link href="/">Volver a la página pública</Link>
-      </main>
-    );
-  }
+  if (checking) return <p>Cargando...</p>; // muestra mensaje mientras valida
 
   return (
-    <main className="p-6">
-      <h1 className="text-3xl font-bold mb-4">Dashboard Admin 🛠️</h1>
-      <p>Bienvenido, {session.user.name}.</p>
-      <Link href="/">Ir a página pública</Link>
-    </main>
+    <div>
+      <h1>Bienvenido, {user.id}</h1>
+      <p>Esta es tu página de admin</p>
+    </div>
   );
 }

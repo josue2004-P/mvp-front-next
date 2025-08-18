@@ -1,13 +1,18 @@
-import Link from "next/link";
+"use client";
+import { useAuth } from "@/src/presentation/auth/useAuth";
 
-export default function PublicPage() {
+export default function UserInfo() {
+
+    const { user,protectGuest, checking } = useAuth();
+    protectGuest();
+  
+    if (checking) return <p>Cargando...</p>;
+
   return (
-    <>
-      <h1 className="text-3xl font-bold mb-4">Página Pública 🌎</h1>
-      <p>Esta página puede verla cualquier persona.</p>
-      <Link href="/admin" className="mt-4 inline-block text-blue-500">
-        Ir al Dashboard de Admin
-      </Link>
-    </>
+    <div>
+      <p>ID: {user.id}</p>
+      <p>Token: {user.token}</p>
+      <p>Profiles: {user.profiles.length}</p>
+    </div>
   );
 }

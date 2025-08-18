@@ -1,18 +1,24 @@
-// app/layout.tsx (Server Component)
 import "./globals.css";
-import NavbarWrapper from "../components/NavbarWrapper";
+import Navbar from "@/src/presentation/shared/Navbar";
+import ClientAppWrapper from "@/src/presentation/shared/ClientAppWrapper";
 
 export const metadata = {
   title: "Mi App",
-  description: "Demo Next.js con navbar",
+  description: "Demo Next.js con Navbar y Redux",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="es">
-      <body className="bg-gray-50 min-h-screen">
-        <NavbarWrapper />
-        <main className="p-6">{children}</main>
+      <body  cz-shortcut-listen="true">
+        <ClientAppWrapper>
+          <Navbar />
+          <main>{children}</main>
+        </ClientAppWrapper>
       </body>
     </html>
   );
