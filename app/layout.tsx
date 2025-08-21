@@ -16,7 +16,7 @@ export default function RootLayout({
     <html lang="es">
       <body  cz-shortcut-listen="true">
         <ClientAppWrapper>
-          <Navbar />
+          {/* <Navbar /> */}
           <main>{children}</main>
         </ClientAppWrapper>
       </body>

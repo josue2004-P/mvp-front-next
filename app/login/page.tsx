@@ -1,42 +1,29 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import LoginForm from "@/src/presentation/auth/LoginForm";
-import { getSubdomain } from "@/utils/getSubdomain";
+import { useAuth } from "@/src/presentation/auth/useAuth";
 
 export default function LoginPage() {
-  const [response, setResponse] = useState<any>(null);
+  const { checking, user } = useAuth();
+  const router = useRouter();
 
-  const handleLogin = async (email: string, password: string) => {
-    const subdomain = getSubdomain();
-    console.log("Subdomain:", subdomain);
-
-    try {
-      const res = await fetch("http://localhost:3000/api/v1/authentication", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Subdomain": subdomain || "",
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await res.json();
-      console.log("Response:", data);
-      setResponse(data);
-    } catch (error) {
-      console.error("Login error:", error);
+  // Hook para redirigir si ya está logueado
+  useEffect(() => {
+    if (!checking && user.isLoggedIn) {
+      router.push("/"); // redirige al home
     }
-  };
+  }, [checking, user, router]);
 
+
+  // Si ya está logueado, renderizamos null (el useEffect se encargará de redirigir)
+  if (user.isLoggedIn) return null;
+
+  // Solo mostrar el formulario si NO está logueado
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <button className="cursor-pointer bg-red-300 px-2 py-1 rounded-md shadow-xl" onClick={()=> {
-        handleLogin("pedro@example.com","pedro")}}>
-    Iniciar Sesion
-      </button>
-      {/* <LoginForm onSubmit={handleLogin} /> */}
-      {response && <pre>{JSON.stringify(response, null, 2)}</pre>}
+      <LoginForm />
     </div>
   );
 }

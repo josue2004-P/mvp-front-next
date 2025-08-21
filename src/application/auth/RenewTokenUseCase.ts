@@ -9,7 +9,7 @@ export class RenewTokenUseCase {
       // Obtener token de cookie (si existe)
       const token = Cookies.get("token") || "";
 
-      const { data } = await axiosClient.get<LoginResponse>("/auth/renew", {
+      const { data } = await axiosClient.get<LoginResponse>("/authentication/renew", {
         headers: {
           "x-token": token,
         },

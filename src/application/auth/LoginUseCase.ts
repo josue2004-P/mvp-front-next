@@ -6,9 +6,11 @@ import { LoginResponse } from "./dto/LoginResponse";
 export class LoginUseCase {
   async execute(data: LoginDto): Promise<LoginResponse> {
     try {
-      const { data: response } = await axiosClient.post<LoginResponse>("/auth", data, {
-        withCredentials: true,
-      });
+      const { data: response } = await axiosClient.post<LoginResponse>(
+        "/authentication",
+        data
+      );
+
       return response;
     } catch (error: any) {
       throw error?.response?.data?.msg || "Error al iniciar sesión";
